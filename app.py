@@ -768,116 +768,468 @@ Prepare a short work sample, mini report, project outline, dashboard, campaign i
 # --------------------------------------------------------------------------
 # UI
 # --------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# UI — HR Mate styled Gradio workspace
+# --------------------------------------------------------------------------
 
 CUSTOM_CSS = """
-.gradio-container {max-width: 1280px !important; margin: auto;}
-footer {display: none !important;}
+:root {
+  --ink: #07111f;
+  --muted: #64748b;
+  --teal: #0f766e;
+  --cyan: #06b6d4;
+  --line: rgba(148, 163, 184, .24);
+  --card: rgba(255, 255, 255, .88);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0 !important;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(45,212,191,.30), transparent 30%),
+    radial-gradient(circle at 88% 14%, rgba(56,189,248,.18), transparent 28%),
+    linear-gradient(135deg, #ecfeff 0%, #f8fafc 48%, #eef2ff 100%) !important;
+}
+
+body, .gradio-container {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  color: var(--ink) !important;
+}
+
+.gradio-container {
+  max-width: 1440px !important;
+  margin: auto !important;
+  padding: 18px !important;
+  background: transparent !important;
+}
+
+footer { display: none !important; }
+
+#login-shell, #workspace-shell {
+  animation: rise .45s ease both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.glass {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.78);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, .11);
+  border-radius: 28px;
+}
+
+.brandbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:16px 18px;
+  margin-bottom:18px;
+}
+
+.brand-left { display:flex; align-items:center; gap:12px; }
+.brand-logo {
+  width:46px; height:46px; border-radius:16px;
+  display:grid; place-items:center;
+  background:#07111f; color:white; font-weight:900;
+  box-shadow:0 12px 28px rgba(15,23,42,.22);
+}
+.brand-title { font-size:22px; font-weight:900; line-height:1; }
+.brand-sub { margin-top:5px; color:#0f766e; font-size:11px; font-weight:900; letter-spacing:.16em; text-transform:uppercase; }
+
+.hero-grid {
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr);
+  gap:20px;
+  align-items:stretch;
+}
+.hero-copy { padding:36px; display:flex; flex-direction:column; justify-content:center; }
+.pill {
+  display:inline-flex; align-items:center; gap:8px; width:max-content;
+  padding:9px 13px; border-radius:999px; background:white;
+  border:1px solid #99f6e4; color:#0f766e; font-weight:900; font-size:13px;
+  box-shadow:0 8px 24px rgba(15,118,110,.09);
+}
+.hero-copy h1 { margin:20px 0 12px; font-size:clamp(42px,6vw,76px); line-height:.96; letter-spacing:-.055em; font-weight:950; }
+.hero-copy h1 span { color:#0d9488; }
+.hero-copy p { max-width:720px; color:#526176; font-size:17px; line-height:1.75; font-weight:650; }
+
+.mini-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:24px; }
+.mini-stat { background:rgba(255,255,255,.82); border:1px solid var(--line); border-radius:18px; padding:16px; }
+.mini-stat b { display:block; font-size:24px; font-weight:950; }
+.mini-stat span { color:#64748b; font-size:12px; font-weight:800; }
+
+.login-card { padding:22px; }
+.preview {
+  background:#07111f; color:white; padding:20px; border-radius:24px;
+  margin-bottom:18px; box-shadow:0 20px 38px rgba(15,23,42,.25);
+}
+.preview-row { display:flex; justify-content:space-between; align-items:center; gap:14px; }
+.score-badge {
+  width:68px; height:68px; border-radius:20px; display:grid; place-items:center;
+  background:#34d399; color:#07111f; font-size:22px; font-weight:950;
+}
+.preview-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:16px; }
+.preview-cell { padding:11px; border-radius:16px; text-align:center; background:rgba(255,255,255,.09); }
+.preview-cell small { color:#cbd5e1; font-weight:800; }
+.preview-cell b { display:block; margin-top:3px; }
+
+.workspace-head {
+  display:flex; justify-content:space-between; align-items:center; gap:18px;
+  padding:24px 28px; margin-bottom:18px;
+}
+.workspace-head h1 { margin:0; font-size:clamp(30px,4vw,52px); font-weight:950; letter-spacing:-.04em; }
+.workspace-head p { margin:7px 0 0; color:#0f766e; font-weight:850; }
+
+.top-actions { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px; }
+.kpi-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:18px; }
+.kpi {
+  padding:18px; border-radius:22px; background:rgba(255,255,255,.9);
+  border:1px solid var(--line); box-shadow:0 14px 35px rgba(15,23,42,.07);
+}
+.kpi .icon { width:42px; height:42px; border-radius:14px; display:grid; place-items:center; background:#ccfbf1; color:#0f766e; font-size:19px; }
+.kpi strong { display:block; font-size:29px; margin-top:14px; font-weight:950; }
+.kpi span { color:#64748b; font-weight:800; font-size:13px; }
+
+.section-card {
+  background:rgba(255,255,255,.90);
+  border:1px solid rgba(255,255,255,.86);
+  border-radius:26px;
+  padding:22px !important;
+  box-shadow:0 18px 50px rgba(15,23,42,.08);
+  margin-bottom:16px;
+}
+.section-title { font-size:23px; font-weight:950; margin:0 0 4px; }
+.section-copy { color:#64748b; font-weight:650; margin:0 0 16px; }
+
+.gr-tabs { background:transparent !important; border:0 !important; }
+.tab-nav {
+  background:rgba(255,255,255,.86) !important;
+  border:1px solid var(--line) !important;
+  border-radius:20px !important;
+  padding:7px !important;
+  gap:6px !important;
+  margin-bottom:16px !important;
+  box-shadow:0 12px 32px rgba(15,23,42,.06);
+}
+.tab-nav button {
+  border-radius:14px !important;
+  font-weight:900 !important;
+  padding:12px 14px !important;
+}
+.tab-nav button.selected {
+  background:#07111f !important;
+  color:white !important;
+}
+
+button.primary, .primary button, button.lg {
+  border:0 !important;
+  border-radius:16px !important;
+  background:linear-gradient(90deg,#0f766e,#06b6d4) !important;
+  color:white !important;
+  font-weight:900 !important;
+  box-shadow:0 12px 25px rgba(13,148,136,.22) !important;
+}
+button.secondary, .secondary button {
+  border-radius:15px !important;
+  font-weight:850 !important;
+}
+button.stop {
+  border-radius:15px !important;
+  font-weight:900 !important;
+}
+
+input, textarea, select {
+  border-radius:14px !important;
+}
+.gr-box, .form, .block {
+  border-radius:18px !important;
+}
+
+#result-box {
+  min-height:330px;
+  background:linear-gradient(180deg,#07111f,#0f172a) !important;
+  color:white !important;
+  border-radius:22px !important;
+  padding:20px !important;
+}
+#result-box h3, #result-box strong { color:white !important; }
+#result-box table { color:white !important; }
+
+#login-form button { width:100%; }
+
+@media (max-width: 1050px) {
+  .hero-grid { grid-template-columns:1fr; }
+  .kpi-grid { grid-template-columns:repeat(3,1fr); }
+  .top-actions { grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width: 700px) {
+  .gradio-container { padding:10px !important; }
+  .hero-copy { padding:22px; }
+  .login-card { padding:16px; }
+  .mini-stats { grid-template-columns:repeat(2,1fr); }
+  .kpi-grid { grid-template-columns:repeat(2,1fr); }
+  .workspace-head { align-items:flex-start; flex-direction:column; padding:20px; }
+}
 """
 
-with gr.Blocks(title="HRM AI Business Automation Agent") as demo:
-    gr.Markdown("# 🧑‍💼 HRM AI Business Automation Agent\nResume screening, candidate pipeline management, JD & interview question generation — all in one place.")
+def login_user(email, password):
+    if not email or not password:
+        return (
+            gr.update(visible=True),
+            gr.update(visible=False),
+            "⚠️ Enter your email and password.",
+            email,
+        )
+    name = email.split("@")[0].replace(".", " ").replace("_", " ").title()
+    return (
+        gr.update(visible=False),
+        gr.update(visible=True),
+        "",
+        name,
+    )
 
-    with gr.Tabs():
-        # ---------------- Screening Tab ----------------
-        with gr.TabItem("📋 Resume Screening"):
-            with gr.Row():
-                with gr.Column(scale=1):
-                    role = gr.Dropdown(JOB_ROLES, value=JOB_ROLES[0], label="Role", allow_custom_value=True)
-                    department = gr.Textbox(value="Marketing", label="Department")
-                    skills = gr.Textbox(value="Python, Power BI, Excel, Communication", label="Required Skills (comma separated)")
-                    requirements = gr.Textbox(value="Communication skills, enthusiasm, project experience", label="Key Requirements")
-                    qualification_type = gr.Dropdown(QUALIFICATION_OPTIONS, value="Any Degree", label="Qualification Type")
-                    qualifications = gr.Textbox(value="MBA, B.Tech, relevant certifications", label="Qualification Details")
-                    experience = gr.Dropdown(EXPERIENCE_OPTIONS, value=EXPERIENCE_OPTIONS[0], label="Experience Required")
-                    minimum_projects = gr.Textbox(value="0", label="Minimum Projects")
-                    nlp_brief = gr.Textbox(value="", label="Additional HR Brief (optional)", lines=2)
-                    resume_file = gr.File(label="Upload Resume (.pdf, .docx, .txt, image)", file_types=[".pdf", ".docx", ".txt", ".png", ".jpg", ".jpeg"])
-                    analyze_btn = gr.Button("🔍 Analyze Resume", variant="primary")
+def create_user(name, email, password, role):
+    if not name or not email or not password:
+        return (
+            gr.update(visible=True),
+            gr.update(visible=False),
+            "⚠️ Complete all signup fields.",
+            name or "",
+        )
+    return (
+        gr.update(visible=False),
+        gr.update(visible=True),
+        "",
+        name,
+    )
 
-                with gr.Column(scale=1):
-                    result_md = gr.Markdown("Upload a resume and click **Analyze Resume** to see AI screening results here.")
-                    with gr.Accordion("Draft outcome email (editable before sending)", open=False):
-                        cand_name = gr.Textbox(label="Candidate Name", interactive=False)
-                        cand_email = gr.Textbox(label="Candidate Email", interactive=False)
-                        cand_decision = gr.Textbox(label="Decision", interactive=False)
-                        email_body_box = gr.Textbox(label="Email Body", lines=10)
+def logout_user():
+    return gr.update(visible=True), gr.update(visible=False)
 
-        # ---------------- Applicants / Pipeline Tab ----------------
-        with gr.TabItem("👥 Applicants & Pipeline"):
-            dash_md = gr.Markdown(dashboard_stats())
-            with gr.Row():
-                status_filter = gr.Dropdown(STATUS_CHOICES, value="All", label="Filter by Status")
-                role_filter = gr.Dropdown(["All"] + JOB_ROLES, value="All", label="Filter by Role")
-                refresh_btn = gr.Button("🔄 Refresh")
-            candidates_df = gr.Dataframe(value=fetch_candidates(), headers=CANDIDATE_COLS, wrap=True, interactive=False)
+with gr.Blocks(title="HR Mate — AI Recruitment Platform", css=CUSTOM_CSS) as demo:
+    current_name = gr.State("HR Recruiter")
 
-            gr.Markdown("### Manage a candidate (use the ID column from the table above)")
-            with gr.Row():
-                candidate_id_box = gr.Textbox(label="Candidate ID")
-                action_msg = gr.Markdown("")
-            with gr.Row():
-                select_btn = gr.Button("✅ Mark Selected")
-                waitlist_btn = gr.Button("⏳ Mark Waiting List")
-                reject_btn = gr.Button("❌ Mark Rejected")
-                delete_btn = gr.Button("🗑️ Delete", variant="stop")
+    # ---------------- Login ----------------
+    with gr.Column(visible=True, elem_id="login-shell") as login_shell:
+        gr.HTML("""
+        <div class="glass brandbar">
+          <div class="brand-left">
+            <div class="brand-logo">HM</div>
+            <div>
+              <div class="brand-title">HR Mate</div>
+              <div class="brand-sub">AI Recruitment Platform</div>
+            </div>
+          </div>
+          <div style="font-weight:900;color:#0f766e">Secure HR Workspace</div>
+        </div>
+        """)
 
-            gr.Markdown("### Export candidate lists to Excel")
-            with gr.Row():
-                export_selected_btn = gr.Button("⬇️ Download Selected.xlsx")
-                export_waiting_btn = gr.Button("⬇️ Download Waiting List.xlsx")
-                export_rejected_btn = gr.Button("⬇️ Download Rejected.xlsx")
-                export_all_btn = gr.Button("⬇️ Download All.xlsx")
-            export_file = gr.File(label="Exported file", interactive=False)
+        with gr.Row(elem_classes=["hero-grid"]):
+            gr.HTML("""
+            <section class="glass hero-copy">
+              <div class="pill">✦ Your AI Recruitment Partner</div>
+              <h1>Hire smarter with <span>HR Mate</span></h1>
+              <p>AI-powered recruitment workspace for resume screening, job descriptions,
+              interview questions, email automation, candidate tracking and hiring analytics.</p>
+              <div class="mini-stats">
+                <div class="mini-stat"><b>15s</b><span>Resume screening</span></div>
+                <div class="mini-stat"><b>AI</b><span>Candidate fit score</span></div>
+                <div class="mini-stat"><b>XLSX</b><span>Recruitment reports</span></div>
+                <div class="mini-stat"><b>Email</b><span>Outcome automation</span></div>
+              </div>
+            </section>
+            """)
 
-        # ---------------- JD Generator Tab ----------------
-        with gr.TabItem("📝 Job Description Generator"):
-            gr.Markdown("Reuses the same role/skills/requirements fields conceptually — fill them in below and generate a JD.")
-            with gr.Row():
-                with gr.Column():
-                    jd_role = gr.Dropdown(JOB_ROLES, value=JOB_ROLES[0], label="Role", allow_custom_value=True)
-                    jd_department = gr.Textbox(value="Marketing", label="Department")
-                    jd_skills = gr.Textbox(value="Python, Power BI, Excel, Communication", label="Required Skills")
-                    jd_requirements = gr.Textbox(value="Communication skills, enthusiasm, project experience", label="Key Requirements")
-                    jd_qual_type = gr.Dropdown(QUALIFICATION_OPTIONS, value="Any Degree", label="Qualification Type")
-                    jd_qualifications = gr.Textbox(value="MBA, B.Tech, relevant certifications", label="Qualification Details")
-                    jd_experience = gr.Dropdown(EXPERIENCE_OPTIONS, value=EXPERIENCE_OPTIONS[0], label="Experience Required")
-                    jd_min_projects = gr.Textbox(value="0", label="Minimum Projects")
-                    jd_brief = gr.Textbox(value="", label="Additional HR Brief (optional)", lines=2)
-                    jd_btn = gr.Button("✨ Generate Job Description", variant="primary")
-                with gr.Column():
-                    jd_output = gr.Markdown()
+            with gr.Column(elem_classes=["glass", "login-card"], elem_id="login-form"):
+                gr.HTML("""
+                <div class="preview">
+                  <div class="preview-row">
+                    <div><small style="color:#a5f3fc;font-weight:800">AI candidate preview</small>
+                    <h2 style="margin:5px 0 0;font-size:26px">Resume matched</h2></div>
+                    <div class="score-badge">92%</div>
+                  </div>
+                  <div class="preview-grid">
+                    <div class="preview-cell"><small>Status</small><b style="color:#6ee7b7">Selected</b></div>
+                    <div class="preview-cell"><small>Role</small><b>Analyst</b></div>
+                    <div class="preview-cell"><small>Skills</small><b>8/10</b></div>
+                  </div>
+                </div>
+                <h2 style="margin:0;font-size:28px;font-weight:950">Welcome to HR Mate</h2>
+                <p style="margin:5px 0 14px;color:#64748b;font-weight:700">Sign in or create your HR workspace.</p>
+                """)
 
-        # ---------------- Interview Questions Tab ----------------
-        with gr.TabItem("🎤 Interview Questions Generator"):
-            with gr.Row():
-                with gr.Column():
-                    iq_role = gr.Dropdown(JOB_ROLES, value=JOB_ROLES[0], label="Role", allow_custom_value=True)
-                    iq_skills = gr.Textbox(value="Python, Power BI, Excel, Communication", label="Skills")
-                    iq_experience = gr.Dropdown(EXPERIENCE_OPTIONS, value=EXPERIENCE_OPTIONS[0], label="Experience")
-                    iq_btn = gr.Button("✨ Generate Interview Questions", variant="primary")
-                with gr.Column():
-                    iq_output = gr.Markdown()
+                with gr.Tabs():
+                    with gr.Tab("Login"):
+                        login_email = gr.Textbox(label="Company Email", placeholder="hr@company.com")
+                        login_password = gr.Textbox(label="Password", type="password")
+                        login_btn = gr.Button("Login to HR Mate", variant="primary")
+                    with gr.Tab("Sign Up"):
+                        signup_name = gr.Textbox(label="Full Name")
+                        signup_email = gr.Textbox(label="Company Email")
+                        signup_password = gr.Textbox(label="Create Password", type="password")
+                        signup_role = gr.Dropdown(
+                            ["HR Recruiter", "Talent Acquisition", "HR Manager", "Recruitment Lead"],
+                            value="HR Recruiter",
+                            label="HR Role",
+                        )
+                        signup_btn = gr.Button("Create HR Mate Workspace", variant="primary")
+                login_message = gr.Markdown()
 
-        # ---------------- Send Email Tab ----------------
-        with gr.TabItem("✉️ Send Outcome Email"):
-            gr.Markdown(
-                "Uses Gmail SMTP. For Gmail, use an **App Password** "
-                "(Google Account → Security → 2-Step Verification → App Passwords), not your normal password."
-            )
-            with gr.Row():
-                with gr.Column():
-                    sender_email = gr.Textbox(label="Sender Gmail Address")
-                    sender_password = gr.Textbox(label="Sender App Password", type="password")
-                    to_email = gr.Textbox(label="Recipient Email")
-                    subject = gr.Textbox(label="Subject", value="Update on your application")
-                    body = gr.Textbox(label="Email Body", lines=10)
-                    send_btn = gr.Button("📤 Send Email", variant="primary")
-                with gr.Column():
-                    send_result = gr.Markdown()
+    # ---------------- Workspace ----------------
+    with gr.Column(visible=False, elem_id="workspace-shell") as workspace_shell:
+        with gr.Row(elem_classes=["glass", "workspace-head"]):
+            workspace_title = gr.HTML("""
+            <div>
+              <h1>HR Recruitment Workspace</h1>
+              <p>AI-powered screening, hiring automation and candidate intelligence</p>
+            </div>
+            """)
+            logout_btn = gr.Button("↪ Logout", variant="secondary")
 
-    # ------------------------------------------------------------------
-    # Wiring
-    # ------------------------------------------------------------------
+        gr.HTML("""
+        <div class="kpi-grid">
+          <div class="kpi"><div class="icon">👥</div><strong>Live</strong><span>Applicant pipeline</span></div>
+          <div class="kpi"><div class="icon">✓</div><strong>AI</strong><span>Resume decisions</span></div>
+          <div class="kpi"><div class="icon">⏳</div><strong>Fast</strong><span>Automated screening</span></div>
+          <div class="kpi"><div class="icon">📊</div><strong>XLSX</strong><span>Exportable records</span></div>
+          <div class="kpi"><div class="icon">✉</div><strong>SMTP</strong><span>Outcome emails</span></div>
+        </div>
+        """)
+
+        with gr.Tabs():
+            # ---------------- Screening ----------------
+            with gr.TabItem("🔍 Resume Screening"):
+                gr.HTML('<div class="section-card"><h2 class="section-title">AI Resume Screening</h2><p class="section-copy">Upload a candidate resume and compare it against role requirements.</p></div>')
+                with gr.Row():
+                    with gr.Column(scale=1, elem_classes=["section-card"]):
+                        role = gr.Dropdown(JOB_ROLES, value=JOB_ROLES[0], label="Role", allow_custom_value=True)
+                        department = gr.Textbox(value="Marketing", label="Department")
+                        skills = gr.Textbox(value="Python, Power BI, Excel, Communication", label="Required Skills")
+                        requirements = gr.Textbox(value="Communication skills, enthusiasm, project experience", label="Key Requirements")
+                        qualification_type = gr.Dropdown(QUALIFICATION_OPTIONS, value="Any Degree", label="Qualification Type")
+                        qualifications = gr.Textbox(value="MBA, B.Tech, relevant certifications", label="Qualification Details")
+                        experience = gr.Dropdown(EXPERIENCE_OPTIONS, value=EXPERIENCE_OPTIONS[0], label="Experience Required")
+                        minimum_projects = gr.Textbox(value="0", label="Minimum Projects")
+                        nlp_brief = gr.Textbox(value="", label="Additional HR Brief", lines=3)
+                        resume_file = gr.File(label="Upload Resume", file_types=[".pdf", ".docx", ".txt", ".png", ".jpg", ".jpeg"])
+                        analyze_btn = gr.Button("Analyze Candidate Resume", variant="primary", size="lg")
+
+                    with gr.Column(scale=1, elem_classes=["section-card"]):
+                        result_md = gr.Markdown(
+                            "### Candidate intelligence will appear here\nUpload a resume and click **Analyze Candidate Resume**.",
+                            elem_id="result-box",
+                        )
+                        with gr.Accordion("Candidate outcome and draft email", open=True):
+                            cand_name = gr.Textbox(label="Candidate Name", interactive=False)
+                            cand_email = gr.Textbox(label="Candidate Email", interactive=False)
+                            cand_decision = gr.Textbox(label="AI Decision", interactive=False)
+                            email_body_box = gr.Textbox(label="Outcome Email Draft", lines=10)
+
+            # ---------------- Pipeline ----------------
+            with gr.TabItem("👥 Applicants & Pipeline"):
+                with gr.Row():
+                    dash_md = gr.Markdown(dashboard_stats(), elem_classes=["section-card"])
+                with gr.Row(elem_classes=["section-card"]):
+                    status_filter = gr.Dropdown(STATUS_CHOICES, value="All", label="Filter by Status")
+                    role_filter = gr.Dropdown(["All"] + JOB_ROLES, value="All", label="Filter by Role")
+                    refresh_btn = gr.Button("Refresh Pipeline", variant="secondary")
+                with gr.Column(elem_classes=["section-card"]):
+                    candidates_df = gr.Dataframe(value=fetch_candidates(), headers=CANDIDATE_COLS, wrap=True, interactive=False)
+
+                with gr.Column(elem_classes=["section-card"]):
+                    gr.Markdown("### Manage Candidate")
+                    candidate_id_box = gr.Textbox(label="Candidate ID")
+                    action_msg = gr.Markdown("")
+                    with gr.Row():
+                        select_btn = gr.Button("Mark Selected", variant="primary")
+                        waitlist_btn = gr.Button("Move to Waiting List")
+                        reject_btn = gr.Button("Mark Rejected")
+                        delete_btn = gr.Button("Delete Candidate", variant="stop")
+
+                with gr.Column(elem_classes=["section-card"]):
+                    gr.Markdown("### Excel Candidate Records")
+                    with gr.Row():
+                        export_selected_btn = gr.Button("Download Selected")
+                        export_waiting_btn = gr.Button("Download Waiting")
+                        export_rejected_btn = gr.Button("Download Rejected")
+                        export_all_btn = gr.Button("Download All Records")
+                    export_file = gr.File(label="Exported Recruitment File", interactive=False)
+
+            # ---------------- JD ----------------
+            with gr.TabItem("✨ AI JD Generator"):
+                gr.HTML('<div class="section-card"><h2 class="section-title">Job Description Generator</h2><p class="section-copy">Create a structured, professional role description in seconds.</p></div>')
+                with gr.Row():
+                    with gr.Column(elem_classes=["section-card"]):
+                        jd_role = gr.Dropdown(JOB_ROLES, value=JOB_ROLES[0], label="Role", allow_custom_value=True)
+                        jd_department = gr.Textbox(value="Marketing", label="Department")
+                        jd_skills = gr.Textbox(value="Python, Power BI, Excel, Communication", label="Required Skills")
+                        jd_requirements = gr.Textbox(value="Communication skills, enthusiasm, project experience", label="Key Requirements")
+                        jd_qual_type = gr.Dropdown(QUALIFICATION_OPTIONS, value="Any Degree", label="Qualification Type")
+                        jd_qualifications = gr.Textbox(value="MBA, B.Tech, relevant certifications", label="Qualification Details")
+                        jd_experience = gr.Dropdown(EXPERIENCE_OPTIONS, value=EXPERIENCE_OPTIONS[0], label="Experience Required")
+                        jd_min_projects = gr.Textbox(value="0", label="Minimum Projects")
+                        jd_brief = gr.Textbox(value="", label="Additional HR Brief", lines=3)
+                        jd_btn = gr.Button("Generate Professional JD", variant="primary", size="lg")
+                    with gr.Column(elem_classes=["section-card"]):
+                        jd_output = gr.Markdown("### Generated job description will appear here", elem_id="result-box")
+
+            # ---------------- Interview ----------------
+            with gr.TabItem("🎤 Interview Questions"):
+                gr.HTML('<div class="section-card"><h2 class="section-title">Interview Question Generator</h2><p class="section-copy">Generate technical, HR, situational and practical questions.</p></div>')
+                with gr.Row():
+                    with gr.Column(elem_classes=["section-card"]):
+                        iq_role = gr.Dropdown(JOB_ROLES, value=JOB_ROLES[0], label="Role", allow_custom_value=True)
+                        iq_skills = gr.Textbox(value="Python, Power BI, Excel, Communication", label="Core Skills")
+                        iq_experience = gr.Dropdown(EXPERIENCE_OPTIONS, value=EXPERIENCE_OPTIONS[0], label="Candidate Level")
+                        iq_btn = gr.Button("Generate Interview Kit", variant="primary", size="lg")
+                    with gr.Column(elem_classes=["section-card"]):
+                        iq_output = gr.Markdown("### Interview kit will appear here", elem_id="result-box")
+
+            # ---------------- Email ----------------
+            with gr.TabItem("✉️ Email Automation"):
+                gr.HTML('<div class="section-card"><h2 class="section-title">Candidate Outcome Email</h2><p class="section-copy">Send selected, waiting-list or rejection communication through Gmail SMTP.</p></div>')
+                with gr.Row():
+                    with gr.Column(elem_classes=["section-card"]):
+                        sender_email = gr.Textbox(label="HR Gmail Address")
+                        sender_password = gr.Textbox(label="Gmail App Password", type="password")
+                        to_email = gr.Textbox(label="Candidate Email")
+                        subject = gr.Textbox(label="Subject", value="Update on your application")
+                        body = gr.Textbox(label="Email Body", lines=12)
+                        send_btn = gr.Button("Send Candidate Email", variant="primary", size="lg")
+                    with gr.Column(elem_classes=["section-card"]):
+                        gr.Markdown("""
+### Gmail setup
+Use a **Gmail App Password**, not your regular Gmail password.
+
+1. Enable 2-Step Verification.
+2. Create an App Password.
+3. Paste the 16-character password here.
+4. Review the recipient and email draft.
+5. Send the outcome email.
+""")
+                        send_result = gr.Markdown()
+
+    # Login wiring
+    login_btn.click(
+        login_user,
+        inputs=[login_email, login_password],
+        outputs=[login_shell, workspace_shell, login_message, current_name],
+    )
+    signup_btn.click(
+        create_user,
+        inputs=[signup_name, signup_email, signup_password, signup_role],
+        outputs=[login_shell, workspace_shell, login_message, current_name],
+    )
+    logout_btn.click(logout_user, outputs=[login_shell, workspace_shell])
+
+    # App wiring
     analyze_btn.click(
         analyze_resume,
         inputs=[resume_file, role, department, skills, requirements, qualification_type,
@@ -891,11 +1243,11 @@ with gr.Blocks(title="HRM AI Business Automation Agent") as demo:
     role_filter.change(refresh_candidates, inputs=[status_filter, role_filter], outputs=[candidates_df])
 
     select_btn.click(lambda cid: change_status(cid, "Selected"), inputs=[candidate_id_box],
-                      outputs=[action_msg, dash_md, candidates_df])
+                     outputs=[action_msg, dash_md, candidates_df])
     waitlist_btn.click(lambda cid: change_status(cid, "Waiting List"), inputs=[candidate_id_box],
-                        outputs=[action_msg, dash_md, candidates_df])
+                       outputs=[action_msg, dash_md, candidates_df])
     reject_btn.click(lambda cid: change_status(cid, "Rejected"), inputs=[candidate_id_box],
-                      outputs=[action_msg, dash_md, candidates_df])
+                     outputs=[action_msg, dash_md, candidates_df])
     delete_btn.click(delete_candidate, inputs=[candidate_id_box], outputs=[action_msg, dash_md, candidates_df])
 
     export_selected_btn.click(lambda: export_and_get_file("selected"), outputs=[export_file])
@@ -911,19 +1263,18 @@ with gr.Blocks(title="HRM AI Business Automation Agent") as demo:
     )
 
     iq_btn.click(generate_interview_questions, inputs=[iq_role, iq_skills, iq_experience], outputs=[iq_output])
-
     send_btn.click(send_email, inputs=[sender_email, sender_password, to_email, subject, body], outputs=[send_result])
 
-    # Autofill send-email fields from the screening result for convenience
     cand_email.change(lambda v: v, inputs=[cand_email], outputs=[to_email])
     email_body_box.change(lambda v: v, inputs=[email_body_box], outputs=[body])
-    cand_name.change(lambda n, d: f"Update on your application ({d})" if d else "Update on your application",
-                      inputs=[cand_name, cand_decision], outputs=[subject])
-
+    cand_name.change(
+        lambda n, d: f"Update on your application ({d})" if d else "Update on your application",
+        inputs=[cand_name, cand_decision],
+        outputs=[subject],
+    )
 
 if __name__ == "__main__":
     demo.queue().launch(
-    share=True,
-    server_name="0.0.0.0",
-    server_port=int(os.environ.get("PORT", 7860)),
-)
+        server_name="0.0.0.0",
+        server_port=int(os.environ.get("PORT", 7860)),
+    )
